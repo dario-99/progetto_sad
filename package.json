@@ -1,0 +1,32 @@
+{
+  "name": "progetto_software_architecture_design",
+  "version": "1.0.0",
+  "description": "Here will be loaded the code of the Software Architecture Design's project",
+  "main": "index.js",
+  "scripts": {
+    "run": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leo-k1/Progetto_Software_Architecture_Design.git"
+  },
+  "keywords": [
+    "ristorazione",
+    "ordinazioni",
+    "automatiche"
+  ],
+  "author": "Dario Di Meo e Leonardo Anania",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Leo-k1/Progetto_Software_Architecture_Design/issues"
+  },
+  "homepage": "https://github.com/Leo-k1/Progetto_Software_Architecture_Design#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mocha": "^10.0.0",
+    "mongoose": "^6.3.4",
+    "nyc": "^15.1.0"
+  }
+}
