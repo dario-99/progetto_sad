@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Anania Leonardo, Di Meo Dario">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Menu</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body class="bg-dark">
+        <%- include('partials/navbar_cliente'); %> 
+        <!--Panini-->
+        <div class="container-fluid bg-dark">
+            <div class="row-0">
+                <% menu.forEach(elem => { %>
+                    <div class="col my-3">
+                        <div class="card border border-3 rounded-pill" style="border-color:#f2bf17 !important" id="<%= elem.id %> ">
+                            <div class="card-body rounded-pill bg-dark text-white">
+                                <%= elem.nome %>: <%= elem.prezzo%>$ 
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </body>
+</html>

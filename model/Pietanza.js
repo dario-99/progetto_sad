@@ -20,11 +20,14 @@ const Schema = mongoose.Schema;
 const pietanzaSchema = new Schema({
     nome:{
         type: String,
-        required: true
+        required: true,
+        minLength: [3, "Stringa troppo piccola"],
+        maxLenght:[30, "Stringa troppo lunga"]
     },
     prezzo:{
         type: Number,
-        required : true
+        required : true,
+        min: [0.0, "Prezzo minore di 0"]
     },
     descrizione:{
         type: String,

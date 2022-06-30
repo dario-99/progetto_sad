@@ -21,6 +21,13 @@ const dbURI = process.env.DBURI;
 //Creazione web server express
 const app = express();
 
+//Imposto web engine embedded java script
+app.set('view engine', 'ejs');
+
+//Imposto le directory degli assets come statiche
+app.use('/assets', express.static('assets'));
+
+
 //Connect al DB mongoDB attraverso l'URI presente nel file .env
 mongoose.connect(dbURI, {useNewUrlParser:true, useUnifiedTopology: true})
     .then((result)=>{
