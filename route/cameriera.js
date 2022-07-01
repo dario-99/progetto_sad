@@ -121,7 +121,7 @@ router.get('/ordini', async (req, res)=>{
     }
     else{
         // console.log(menu_json);
-        res.render('ordini', {ordini: ordini_json});
+        res.render('listaOrdini', {ordini: ordini_json});
     }
 });
 
