@@ -30,7 +30,16 @@ const OrdineSchema = new Schema({
                 required: true
             }
         }
-    ]
+    ],
+    status:{
+        type: String,
+        default: 'new',
+        enum: ['new', 'in_preparazione', 'completato']
+    },
+    date:{
+        type:Date,
+        default: Date.now
+    }
 },
 { collection: 'Ordine'} //nome della collection
 );
