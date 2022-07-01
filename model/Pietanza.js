@@ -44,4 +44,7 @@ const pietanzaSchema = new Schema({
 const pietanza = mongoose.model('pietanza', pietanzaSchema);
 
 //exports
-module.exports = pietanza;
+module.exports = {
+    pietanza,
+    pietanzaSchema
+};

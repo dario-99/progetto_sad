@@ -47,5 +47,9 @@ app.use(express.json()) //Middleware per gestire richieste http con body formato
 //route legate al cliente
 const cliente = require('./route/cliente');
 
+//route legate alla cameriera
+const cameriera = require('./route/cameriera');
+
 //utilizzo le route importate
 app.use('/cliente', cliente);
+app.use('/cameriera', cameriera);

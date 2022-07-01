@@ -7,7 +7,7 @@
 */
 
 //import
-const pietanza = require('../model/Pietanza');  //Model di pietanza
+const pietanza = require('../model/Pietanza').pietanza;  //Model di pietanza
 
 
 /*
@@ -16,7 +16,7 @@ const pietanza = require('../model/Pietanza');  //Model di pietanza
     *Description: Effettua la query sulla collection, prendendo tutte le pietanze in caso di eccezione la facciamo gestire dal chiamante
 */
 const getMenu = async function(){
-    var result = "asd"
+    var result;
     result = await pietanza.find();
     return result;
 }
@@ -45,7 +45,7 @@ const insertPietanza = async function(json_pietanza){
         }
         console.log(error);
     }
-    if(error != null){
+    if(error.length != 0){
         throw new Error(error);
     }
 }

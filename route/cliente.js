@@ -10,7 +10,8 @@
     /cliente
         |
         L /getMenu        *GET,NO_INPUT*
-        L /insertOrdine   *POST, JSON_ORDINE*   
+        L /insertOrdine   *POST, JSON_ORDINE*  
+        L /menu           *GET, NO_INPUT*
 */
 
 //import esterni
@@ -18,6 +19,7 @@ const express = require('express')
 
 //import controller
 const PietanzeController = require('../control/PietanzeController');
+const OrdineController = require('../control/OrdineController');
 
 // Crezione Router esportabile alla fine del codice, in modo da essere usato come
 // Router nell'entry point
@@ -43,59 +45,30 @@ router.get('/getMenu', async (req, res)=>{
     }
 });
 
-//route per l'inserimento di una pietanza
 
 /*
     METHOD: POST
-    INPUT: JSON pietanza
-    RESPONSE: invia json di risposta, status ok in caso di corretto inserimento, error in caso di errori con una lista degli errori 
-    DESCRIPTION: richiamare controller, parsing e validazione json, invio ok response o error
+    INPUT: Json dell'ordine
+    RESPONSE: status della richiesta, ok se corretta error altrimenti
+    DESCRIPTION: Tramite richiesta http, inseriamo l'ordine specificato dall'utente all'interno del DB.
 */
-router.post('/insertPietanza', async (req,res)=>{
-    var error = null;
+router.post('/insertOrdine', async (req, res)=>{
+    var error;
     try{
-        await PietanzeController.insertPietanza(req.body);
+        await OrdineController.insertOrdine(req.body);
     } catch(err){
         error = err;
-        // console.log(error.message);
     }
-    //in caso di errore invia le stringhe relative agli errori
+    // console.log(error);
     if(error){
-        res.status(200).send({status: 'ok', error: ''});
+        res.status(500).send({status:'error', error: error.message});
     }
     else{
-        res.status(500).send({status: 'error', error: error.message});
+        res.send({status:'ok', error:''});
     }
 });
 
-//route per l'elminazione di una pietanza partendo da un id
-/*
-    METHOD: DELETE
-    INPUT: json con campo _id con l'id del panino da eliminare
-    RESPONSE: status ok in caso di corretta eliminazione, error altrimenti
-*/
-router.delete('/removePietanza', async (req, res)=>{
-    var error;
-    id = req.body._id;
-    if (id){
-        try{
-            await PietanzeController.removePietanzaByID(id);
-        }
-        catch(err){
-            error = err;
-        }
-    }else{
-        error = ["Nessun id presente"];
-    }
-    if(error){
-        res.status(500).send({status: 'error', error : error.message});
-    }
-    else{
-        res.send({status: 'ok', error: ''});
-    }
-});
-
-//route per l'elminazione di una pietanza partendo da un id
+//-----------------------------------------PAGINE STATICHE---------------------------------------
 /*
     METHOD: GET
     INPUT: None
