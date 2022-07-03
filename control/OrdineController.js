@@ -49,7 +49,32 @@ const getOrdini = async function(){
     return result;
 }
 
+/*
+    *Input: id
+    *Output: Json ordine
+    *Description: Effettua la richiesta al DB per l'ordine con l'id fornito in input
+*/
+const getOrdineByID = async function(id){
+    var result;
+    var error;
+    try{
+        result = await Ordine.findById(id);
+    } catch(err){
+        error = err;
+    }
+    if(!result){
+        throw new Error(`Ordine n. ${id} non trovato`);
+    }
+    if(error){
+        throw new Error(error.message);
+    }
+    else{
+        return result;
+    }
+}
+
 module.exports = {
     insertOrdine,
-    getOrdini
+    getOrdini,
+    getOrdineByID
 };

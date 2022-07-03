@@ -125,5 +125,30 @@ router.get('/ordini', async (req, res)=>{
     }
 });
 
+/*
+    METHOD: GET
+    INPUT: None
+    RESPONSE: Pagina html renderizzata da ejs, contenente la lista degli ordini
+*/
+router.get('/ordine/:id', async (req, res)=>{
+    var error;
+    var ordine_json;
+    try{
+        //Richiamo controller per effettuare il retrieve di tutte le pietanze
+        ordine_json = await OrdineController.getOrdineByID(req.params.id);
+    }
+    catch(err){
+        //In caso di errore inviamo msg HTTP con status 500
+        error = err;
+    }
+    if(error){
+        res.status(500).send({status: 'error', error:'Errore richiesta pagina ordine!'});
+    }
+    else{
+        // console.log(menu_json);
+        res.render('ordine', {ordine: ordine_json});
+    }
+});
+
 //export router
 module.exports = router

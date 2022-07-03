@@ -12,11 +12,11 @@
         <!--Panini-->
         <div class="container-fluid bg-dark">
             <div class="row-0">
-                <% ordini.forEach(elem => { %>
-                    <div class="col my-3" onclick="location.href='/cameriera/ordine/<%= elem.id%>'">
+                <% ordine.ordine.forEach(elem => { %>
+                    <div class="col my-3">
                         <div class="card border border-3 rounded-pill" style="border-color:#f2bf17 !important" id="<%= elem.id %> ">
                             <div class="card-body rounded-pill bg-dark text-white">
-                                ordine n. <%= elem._id %>, status = <%= elem.status %>, data = <%= elem.date %> 
+                                ordine n. <%= elem._id %>, qta = <%= elem.qta %>
                             </div>
                         </div>
                     </div>
