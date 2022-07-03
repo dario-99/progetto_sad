@@ -22,7 +22,7 @@ const pietanzaSchema = new Schema({
         type: String,
         required: true,
         minLength: [3, "Stringa troppo piccola"],
-        maxLenght:[30, "Stringa troppo lunga"]
+        maxLenght:30
     },
     prezzo:{
         type: Number,

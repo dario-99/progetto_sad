@@ -1,0 +1,52 @@
+{
+    "panino_ok":{
+        "nome": "panino test",
+        "prezzo": 10,
+        "descrizione": "Descrizione panino",
+        "ingredienti": [
+            "Hamburger di chianina",
+            "Cipolla Caramellata"
+        ]
+    },
+    "panino_nome_corto":{
+        "nome": "pa",
+        "prezzo": 10,
+        "descrizione": "Descrizione panino",
+        "ingredienti": [
+            "Hamburger di chianina",
+            "Cipolla Caramellata"
+        ]
+    },
+    "panino_nome_lungo":{
+        "nome": "paninooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo",
+        "prezzo": 10,
+        "descrizione": "Descrizione panino",
+        "ingredienti": [
+            "Hamburger di chianina",
+            "Cipolla Caramellata"
+        ]
+    },
+    "panino_prezzo_negativo":{
+        "nome": "panino test",
+        "prezzo": -10,
+        "descrizione": "Descrizione panino",
+        "ingredienti": [
+            "Hamburger di chianina",
+            "Cipolla Caramellata"
+        ]
+    },
+    "panino_senza_nome":{
+        "prezzo": 10,
+        "descrizione": "Descrizione panino",
+        "ingredienti": [
+            "Hamburger di chianina",
+            "Cipolla Caramellata"
+        ]
+    },
+    "panino_ingredienti_numero":{
+        "nome": "panino test",
+        "prezzo": 10,
+        "descrizione": "Descrizione panino",
+        "ingredienti": 20
+    }
+}

@@ -65,7 +65,7 @@ router.post('/insertPietanza', async (req,res)=>{
         // console.log(error.message);
     }
     //in caso di errore invia le stringhe relative agli errori
-    if(error){
+    if(!error){
         res.status(200).send({status: 'ok', error: ''});
     }
     else{

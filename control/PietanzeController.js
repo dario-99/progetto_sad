@@ -29,7 +29,6 @@ const getMenu = async function(){
 const insertPietanza = async function(json_pietanza){
     const piet = new pietanza(json_pietanza);
     var error = [];
-    var id;
     //Throws exception nel caso ci sia un errore
     try{
         await piet.save();
@@ -43,7 +42,6 @@ const insertPietanza = async function(json_pietanza){
         if(!error){
             error.push("Undefined error");
         }
-        console.log(error);
     }
     if(error.length != 0){
         throw new Error(error);
