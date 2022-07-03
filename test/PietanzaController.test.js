@@ -8,34 +8,22 @@ var assert = require('chai').assert;
 const PietanzeController = require('../control/PietanzeController');
 const db = require('./db');
 const pietanzaJson = require('./pietanze.json');
-const mongoose = require('mongoose');
-const {MongoMemoryServer} = require('mongodb-memory-server');
+// const mongoose = require('mongoose');
+// const {MongoMemoryServer} = require('mongodb-memory-server');
 
-let mongoServer;
-const mongooseOpts = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-};
 
 //Initialization
 //Prima di eseguire i test eseguo la connessione al DB
 before(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri, mongooseOpts);
+    await db.connect();
 });
 //dopo ogni test libero il DB
 afterEach(async () =>{
-    const collections = mongoose.connection.collections;
-    for(const key in collections){
-        const collection = collections[key];
-        await collection.deleteMany();
-    }
+    await db.clearDb();
 });
 //dopo tutti i test chiudo la connessione col mock DB
 after(async () => {
-    await mongoose.disconnect();
-    await mongoServer.stop();
+    await db.closeDb();
 });
 
 //Test case per pietanze controller

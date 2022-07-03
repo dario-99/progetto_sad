@@ -10,23 +10,23 @@ const mongoose = require('mongoose');
 const {MongoMemoryServer} = require('mongodb-memory-server');
 
 //Creo il mockDB
-const mongod = new MongoMemoryServer();
+let mongoServer;
+const mongooseOpts = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+};
 
 //Metodo connessione al db
 const connect = async function(){
-    const uri = await mongod.getUri();
-    const mongooseOpts = {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    };
-    await mongoose.connect(uri, mongooseOpts);
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+    await mongoose.connect(mongoUri, mongooseOpts);
 };
 
 //chiude la connessione al DB
 const closeDb = async function(){
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
-    await mongod.stop();
+    await mongoose.disconnect();
+    await mongoServer.stop();
 };
 
 //Effettua il clear del DB
