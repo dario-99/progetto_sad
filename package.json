@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "run": "node index.js",
-    "test": "nyc mocha --timeout 60000"
+    "test": "nyc mocha ./test/test.js --timeout 60000"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Leo-k1/Progetto_Software_Architecture_Design.git"
+    "url": "git+https:// github.com/dario-99/progetto_sad.git"
   },
   "keywords": [
     "ristorazione",
@@ -19,9 +19,9 @@
   "author": "Dario Di Meo e Leonardo Anania",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Leo-k1/Progetto_Software_Architecture_Design/issues"
+    "url": "https:// github.com/dario-99/progetto_sad/issues"
   },
-  "homepage": "https://github.com/Leo-k1/Progetto_Software_Architecture_Design#readme",
+  "homepage": "https:// github.com/dario-99/progetto_sad#readme",
   "dependencies": {
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",

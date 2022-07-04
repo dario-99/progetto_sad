@@ -1,13 +1,13 @@
 /*
     Authors: Dario Di Meo, Leonardo Anania
-    GitHub: https://github.com/Leo-k1/Progetto_Software_Architecture_Design
+    GitHub: https:// github.com/dario-99/progetto_sad
     Version: 1.0
     Description: Controller degli ordini, si occupa dell'inserimento, eliminazione e gestione degli ordini
 */
 
-//import
-const Ordine = require('../model/Ordine');  //Model di ordine
-const Pietanza = require('../model/Pietanza').pietanza;  //Model di ordine
+// import
+const Ordine = require('../model/Ordine');  // Model di ordine
+const Pietanza = require('../model/Pietanza').pietanza;  // Model di ordine
 
 /*
     *Input: Ordine
@@ -16,6 +16,16 @@ const Pietanza = require('../model/Pietanza').pietanza;  //Model di ordine
 */
 const insertOrdine = async function(ordine){
     var error = [];
+    //  controllo che ci siano elementi nell'ordine
+    if(Object.keys(ordine).length === 0){
+        throw new Error(`Ordine vuoto`);
+    }
+    if(ordine.status){
+        const status = ['new', 'in_preparazione', 'completato']
+        if(!(ordine.status in status)){
+            throw new Error(`status ${ordine.status} non presente in lista`);
+        }
+    }
     for(const elemOrdine of ordine.ordine){
         if(elemOrdine.qta <= 0){
             error.push(`Qta sbagliata per ordine ${elemOrdine.pietanza}`);

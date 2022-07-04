@@ -1,0 +1,7 @@
+{
+    "ordine_ok": {
+    },
+    "ordine_stutus_not_enum": {
+        "status": "prova"
+    }
+}
