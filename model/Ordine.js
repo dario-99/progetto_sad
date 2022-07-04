@@ -5,18 +5,18 @@
     Description: Model di ordine
 */
 
-//Import esterni
-const mongoose = require('mongoose'); //Server Mongoose
+// Import esterni
+const mongoose = require('mongoose'); // Server Mongoose
 
 /*-------------------SCHEMA---------------------------------
  * Creazione schema mongoose della collection Ordine
  * Uno schema non è altro che la struttura della collection.
 */
-//Classe schema del modulo mongoose
+// Classe schema del modulo mongoose
 const Schema = mongoose.Schema;
 
 
-//Schema delle pietanze
+// Schema delle pietanze
 const OrdineSchema = new Schema({
     ordine:[
         {
@@ -41,10 +41,10 @@ const OrdineSchema = new Schema({
         default: Date.now
     }
 },
-{ collection: 'Ordine'} //nome della collection
+{ collection: 'Ordine'} // nome della collection
 );
 
 const ordine = mongoose.model('Ordine', OrdineSchema);
 
-//exports
+// exports
 module.exports = ordine;

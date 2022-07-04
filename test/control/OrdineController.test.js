@@ -5,47 +5,47 @@
     Description: Test case per ordini controller
 */
 
-//import esterni
+// import esterni
 var assert = require('chai').assert;
 
-//import
+// import
 const OrdineController = require('../../control/OrdineController');
 const PietanzeController = require('../../control/PietanzeController');
 const db = require('../db');
 const pietanzaJson = require('../pietanze.json');
 const ordiniJson = require('../ordini.json');
 
-//variabile contenente il menu
+// variabile contenente il menu
 var menu;
 
 describe('Ordine Controller', ()=>{
-    //Initialization
-    //Prima di eseguire i test eseguo la connessione al DB
+    // Initialization
+    // Prima di eseguire i test eseguo la connessione al DB
     before(async () => {
         await db.connect();
     });
-    //prima di eseguire ogni test popolo il DB
+    // prima di eseguire ogni test popolo il DB
     beforeEach(async ()=>{
-        //inserisco 10 pietanze di testing
+        // inserisco 10 pietanze di testing
         for(var i=0; i<10; i++){
             await PietanzeController.insertPietanza(pietanzaJson.panino_ok);
         }
 
-        //Menu con tutte le pietanze
+        // Menu con tutte le pietanze
         menu = await PietanzeController.getMenu();
 
-        //Popolo di ordini
+        // Popolo di ordini
         var ordine = ordiniJson.ordine_ok;
         for(var i = 0; i<10; i++){
             ordine.ordine = [{qta:i+1, pietanza:menu[i]._id}];
             await OrdineController.insertOrdine(ordine);
         }
     });
-    //dopo ogni test libero il DB
+    // dopo ogni test libero il DB
     afterEach(async () =>{
         await db.clearDb();
     });
-    //dopo tutti i test chiudo la connessione col mock DB
+    // dopo tutti i test chiudo la connessione col mock DB
     after(async () => {
         await db.closeDb();
     });
