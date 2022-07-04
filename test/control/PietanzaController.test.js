@@ -5,12 +5,9 @@
     Description: Test case per Pietanza Controller
 */
 var assert = require('chai').assert;
-const PietanzeController = require('../control/PietanzeController');
-const db = require('./db');
-const pietanzaJson = require('./pietanze.json');
-// const mongoose = require('mongoose');
-// const {MongoMemoryServer} = require('mongodb-memory-server');
-
+const PietanzeController = require('../../control/PietanzeController');
+const db = require('../db');
+const pietanzaJson = require('../pietanze.json');
 
 //Initialization
 //Prima di eseguire i test eseguo la connessione al DB
