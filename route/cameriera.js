@@ -1,11 +1,11 @@
 /*
     Authors: Dario Di Meo, Leonardo Anania
-    GitHub: https:// github.com/dario-99/progetto_sad
+    GitHub: https://github.com/dario-99/progetto_sad
     Version: 1.0
     Description: Route per le richieste HTTP legate al cliente
 */
 
-// Struttura ROUTE
+//Struttura ROUTE
 /*
     /cameriera
         |
@@ -14,15 +14,15 @@
         L /getOrdini      *GET, NO_INPUT*
 */
 
-// import esterni
+//import esterni
 const express = require('express')
 
-// import controller
+//import controller
 const PietanzeController = require('../control/PietanzeController');
 const OrdineController = require('../control/OrdineController');
 
-//  Crezione Router esportabile alla fine del codice, in modo da essere usato come
-//  Router nell'entry point
+// Crezione Router esportabile alla fine del codice, in modo da essere usato come
+// Router nell'entry point
 const router = express.Router();
 
 /*------------------------------------ROUTES----------------------------------*/
@@ -41,7 +41,7 @@ router.get('/getOrdini', async (req,res)=>{
     } catch(err){
         error = err;
     }
-    // in caso di errore invia le stringhe relative agli errori
+    //in caso di errore invia le stringhe relative agli errori
     if(error){
         res.status(500).send({status: 'error', error: error.message});
     }
@@ -62,9 +62,9 @@ router.post('/insertPietanza', async (req,res)=>{
         await PietanzeController.insertPietanza(req.body);
     } catch(err){
         error = err;
-        //  console.log(error.message);
+        // console.log(error.message);
     }
-    // in caso di errore invia le stringhe relative agli errori
+    //in caso di errore invia le stringhe relative agli errori
     if(!error){
         res.status(200).send({status: 'ok', error: ''});
     }
@@ -109,18 +109,18 @@ router.get('/ordini', async (req, res)=>{
     var error;
     var ordini_json;
     try{
-        // Richiamo controller per effettuare il retrieve di tutte le pietanze
+        //Richiamo controller per effettuare il retrieve di tutte le pietanze
         ordini_json = await OrdineController.getOrdini();
     }
     catch(err){
-        // In caso di errore inviamo msg HTTP con status 500
+        //In caso di errore inviamo msg HTTP con status 500
         error = err;
     }
     if(error){
         res.status(500).send({status: 'error', error:'Errore richiesta pagina!'});
     }
     else{
-        //  console.log(menu_json);
+        // console.log(menu_json);
         res.render('listaOrdini', {ordini: ordini_json});
     }
 });
@@ -134,21 +134,21 @@ router.get('/ordine/:id', async (req, res)=>{
     var error;
     var ordine_json;
     try{
-        // Richiamo controller per effettuare il retrieve di tutte le pietanze
+        //Richiamo controller per effettuare il retrieve di tutte le pietanze
         ordine_json = await OrdineController.getOrdineByID(req.params.id);
     }
     catch(err){
-        // In caso di errore inviamo msg HTTP con status 500
+        //In caso di errore inviamo msg HTTP con status 500
         error = err;
     }
     if(error){
         res.status(500).send({status: 'error', error:'Errore richiesta pagina ordine!'});
     }
     else{
-        //  console.log(menu_json);
+        // console.log(menu_json);
         res.render('ordine', {ordine: ordine_json});
     }
 });
 
-// export router
+//export router
 module.exports = router

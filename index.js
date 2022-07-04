@@ -1,34 +1,34 @@
 /*
     Authors: Dario Di Meo, Leonardo Anania
-    GitHub: https:// github.com/dario-99/progetto_sad
+    GitHub: https://github.com/dario-99/progetto_sad
     Version: 1.0
     Description: Entry point del web server, inizializza il web server connettendosi al DB,
                  impostando le route per le richieste HTTP.
 */
 
-// Imports
-const express = require('express');// modulo per web server 
-const mongoose = require('mongoose');// modulo per comunicare con mongo DB
+//Imports
+const express = require('express');//modulo per web server 
+const mongoose = require('mongoose');//modulo per comunicare con mongo DB
 require('dotenv').config();
 
-// Utility functions
+//Utility functions
 
-// Porta di default 3000, altrimenti si richiede dal file di configurazione .env
+//Porta di default 3000, altrimenti si richiede dal file di configurazione .env
 const port = process.env.port | 3000;
-// URI per server mongoDB, usato per connettersi al server
+//URI per server mongoDB, usato per connettersi al server
 const dbURI = process.env.DBURI;
 
-// Creazione web server express
+//Creazione web server express
 const app = express();
 
-// Imposto web engine embedded java script
+//Imposto web engine embedded java script
 app.set('view engine', 'ejs');
 
-// Imposto le directory degli assets come statiche
+//Imposto le directory degli assets come statiche
 app.use('/assets', express.static('assets'));
 
 
-// Connect al DB mongoDB attraverso l'URI presente nel file .env
+//Connect al DB mongoDB attraverso l'URI presente nel file .env
 mongoose.connect(dbURI, {useNewUrlParser:true, useUnifiedTopology: true})
     .then((result)=>{
         console.log("connected to DB");
@@ -38,18 +38,18 @@ mongoose.connect(dbURI, {useNewUrlParser:true, useUnifiedTopology: true})
     })
     .catch((err)=> console.log(err));
 
-// Middleware utilizzati
-app.use(express.json()) // Middleware per gestire richieste http con body formato da JSON
+//Middleware utilizzati
+app.use(express.json()) //Middleware per gestire richieste http con body formato da JSON
 
-// ----------------ROUTES---------------------
-// Le route permettono di gestire in maniera modulare le richieste http al server
+//----------------ROUTES---------------------
+//Le route permettono di gestire in maniera modulare le richieste http al server
 
-// route legate al cliente
+//route legate al cliente
 const cliente = require('./route/cliente');
 
-// route legate alla cameriera
+//route legate alla cameriera
 const cameriera = require('./route/cameriera');
 
-// utilizzo le route importate
+//utilizzo le route importate
 app.use('/cliente', cliente);
 app.use('/cameriera', cameriera);

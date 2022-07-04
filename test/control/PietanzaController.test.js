@@ -1,6 +1,6 @@
 /*
     Authors: Dario Di Meo, Leonardo Anania
-    GitHub: https:// github.com/dario-99/progetto_sad
+    GitHub: https://github.com/dario-99/progetto_sad
     Version: 1.0
     Description: Test case per Pietanza Controller
 */
@@ -11,25 +11,25 @@ const pietanzaJson = require('../pietanze.json');
 
 
 
-// Test case per pietanze controller
+//Test case per pietanze controller
 describe('Pietanze Controller', ()=>{
-    // Initialization
-    // Prima di eseguire i test eseguo la connessione al DB
+    //Initialization
+    //Prima di eseguire i test eseguo la connessione al DB
     before(async () => {
         await db.connect();
     });
-    // dopo ogni test libero il DB
+    //dopo ogni test libero il DB
     afterEach(async () =>{
         await db.clearDb();
     });
-    // dopo tutti i test chiudo la connessione col mock DB
+    //dopo tutti i test chiudo la connessione col mock DB
     after(async () => {
         await db.closeDb();
     });
-    // Test cases per la funzionalita' getMenu
+    //Test cases per la funzionalita' getMenu
     describe('get Menu', function(){
         it('Dovrebbe retrievare la stessa pietanza inserita', async ()=>{
-            // inserisco pietanza fittizia
+            //inserisco pietanza fittizia
             await PietanzeController.insertPietanza(pietanzaJson.panino_ok);
             const menu = await PietanzeController.getMenu();
             var pietanza = menu[0];
@@ -39,10 +39,10 @@ describe('Pietanze Controller', ()=>{
             assert.typeOf(pietanza.ingredienti, 'array', "tipo ingredienti errato");
         });
     });
-    //  Test cases per la funzionalita' insertPietanza
+    // Test cases per la funzionalita' insertPietanza
     describe('insert Pietanza', ()=>{
         it('insert con valori accettabili', async ()=>{
-            // inserisco pietanza fittizia
+            //inserisco pietanza fittizia
             await PietanzeController.insertPietanza(pietanzaJson.panino_ok);
             const menu = await PietanzeController.getMenu()
             var pietanza = menu[0];
@@ -52,7 +52,7 @@ describe('Pietanze Controller', ()=>{
             assert.typeOf(pietanza.ingredienti, 'array', "tipo ingredienti errato");
         });
         it('insert stringa troppo piccola', async ()=>{
-            // inserisco pietanza fittizia
+            //inserisco pietanza fittizia
             var error;
             try{
                 await PietanzeController.insertPietanza(pietanzaJson.panino_nome_corto);
@@ -67,7 +67,7 @@ describe('Pietanze Controller', ()=>{
             }
         });
         it('insert prezzo negativo', async ()=>{
-            // inserisco pietanza fittizia
+            //inserisco pietanza fittizia
             var error;
             try{
                 await PietanzeController.insertPietanza(pietanzaJson.panino_prezzo_negativo);
@@ -82,7 +82,7 @@ describe('Pietanze Controller', ()=>{
             }
         });
         it('insert pietanza senza nome', async ()=>{
-            // inserisco pietanza fittizia
+            //inserisco pietanza fittizia
             var error;
             try{
                 await PietanzeController.insertPietanza(pietanzaJson.panino_senza_nome);
@@ -97,7 +97,7 @@ describe('Pietanze Controller', ()=>{
             }
         });
     });
-    //  Test cases per la funzionalita' removePietanzaByID
+    // Test cases per la funzionalita' removePietanzaByID
     describe('removePietanzaByID', ()=>{
         it('remove pietanza presente', async ()=>{
             var menu;

@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https:// github.com/dario-99/progetto_sad.git"
+    "url": "git+https://github.com/dario-99/progetto_sad.git"
   },
   "keywords": [
     "ristorazione",
@@ -19,9 +19,9 @@
   "author": "Dario Di Meo e Leonardo Anania",
   "license": "ISC",
   "bugs": {
-    "url": "https:// github.com/dario-99/progetto_sad/issues"
+    "url": "https://github.com/dario-99/progetto_sad/issues"
   },
-  "homepage": "https:// github.com/dario-99/progetto_sad#readme",
+  "homepage": "https://github.com/dario-99/progetto_sad#readme",
   "dependencies": {
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",

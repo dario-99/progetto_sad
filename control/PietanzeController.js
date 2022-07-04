@@ -1,13 +1,13 @@
 /*
     Authors: Dario Di Meo, Leonardo Anania
-    GitHub: https:// github.com/dario-99/progetto_sad
+    GitHub: https://github.com/dario-99/progetto_sad
     Version: 1.0
     Description: Controller delle pietanze, si occupa del retrieve di tutti le
                  pietanze all'interno del DB e degli insert e remove delle singole pietanze
 */
 
-// import
-const pietanza = require('../model/Pietanza').pietanza;  // Model di pietanza
+//import
+const pietanza = require('../model/Pietanza').pietanza;  //Model di pietanza
 
 
 /*
@@ -29,7 +29,7 @@ const getMenu = async function(){
 const insertPietanza = async function(json_pietanza){
     const piet = new pietanza(json_pietanza);
     var error = [];
-    // Throws exception nel caso ci sia un errore
+    //Throws exception nel caso ci sia un errore
     try{
         await piet.save();
     } catch(err){
