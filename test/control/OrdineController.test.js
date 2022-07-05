@@ -50,7 +50,7 @@ describe('Ordine Controller', ()=>{
         await db.closeDb();
     });
     describe('test get ordini', ()=>{
-        it('get', async()=>{
+        it('get', async ()=>{
             var ordini = await OrdineController.getOrdini();
             for(var i = 0; i<10; i++){
                 assert.equal(ordini[i].ordine[0].qta, i+1, "qta errata");
