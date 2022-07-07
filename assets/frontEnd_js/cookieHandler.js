@@ -1,5 +1,5 @@
 // Retrieving del cookie desiderado con nome 'cname'
-const getCookie = function(cname){
+export const getCookie = function(cname){
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
@@ -13,17 +13,12 @@ const getCookie = function(cname){
         }
     }
     return "";
-}
+};
 
 // Imposta il cookie con nome 'cname' al valore 'cvalue' con numero di giorni per scadere 'exdays'
-const setCookie = function (cname, cvalue, exdays) {
+export const setCookie = function (cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     let expires = "expires="+d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-module.exports = {
-    getCookie,
-    setCookie
-}
+};

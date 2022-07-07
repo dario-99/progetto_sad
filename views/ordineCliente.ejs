@@ -4,11 +4,11 @@
         <%- include('partials/head'); %> 
         <title>Ordine</title>
     </head>
-    <body class="bg-dark" style="font-family:'Work Sans', sans-serif;">
+    <body class="bg-dark pb-3" style="font-family:'Work Sans', sans-serif;">
         <%- include('partials/navbar_cliente'); %>
         <!--Panini-->
-        <div class="container-fluid bg-dark">
-            <div class="row-0">
+        <div class="container-fluid bg-dark" onload="loadOrdine()">
+            <div class="row-0" id="pietanze">
                 
             </div>
         </div>
@@ -16,4 +16,7 @@
             <%- include('partials/footer_ordine'); %> 
         </div>
     </body>
+    <script>
+        window.onload =loadOrdine;
+    </script>
 </html>
