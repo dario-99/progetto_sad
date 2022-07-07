@@ -27,25 +27,28 @@ const setCookie = function (cname, cvalue, exdays) {
 
 // Funzione per aggiungere nei cookie la pietanza all'ordine
 function aggiungi_pietanza(id){
-    var ordine = getCookie('ordine');
-    var obj;
-    if(ordine != ''){
-        obj = JSON.parse(ordine);
-        var cond = false;
-        for(var elem of obj.ordine){
-            if(elem.pietanza == id){
-                cond = true;
-                elem.qta += 1;
+    var stato = getCookie('status_ordine');
+    if(stato != 'inviato'){
+        var ordine = getCookie('ordine');
+        var obj;
+        if(ordine != ''){
+            obj = JSON.parse(ordine);
+            var cond = false;
+            for(var elem of obj.ordine){
+                if(elem.pietanza == id){
+                    cond = true;
+                    elem.qta += 1;
+                }
+            }
+            if(!cond){
+                obj.ordine.push({qta:1, pietanza: id});
             }
         }
-        if(!cond){
-            obj.ordine.push({qta:1, pietanza: id});
+        else{
+            obj = {ordine : [{qta:1, pietanza:id}]};
         }
+        setCookie('ordine', JSON.stringify(obj), 1);
     }
-    else{
-        obj = {ordine : [{qta:1, pietanza:id}]};
-    }
-    setCookie('ordine', JSON.stringify(obj), 1);
 };
 
 // Funzione per incrementare del valore in input la qta della pietanza nell'ordine
@@ -85,7 +88,8 @@ function inviaOrdine(){
         body: data
     })
     .then(res => {
-        setCookie('status_ordine', 'inviato');
+        setCookie('status_ordine', 'inviato', 1);
+        window.location.href = '/cliente/menu';
     })
     .catch(err => {
         alert('Errore invio ordine!');
@@ -135,45 +139,52 @@ async function calcolaPrezzo(){
         var prezzo_component = document.getElementById('prezzo');
         prezzo_component.innerHTML = `${prezzo}€`;
         var footer = document.getElementById('footer_container');
-        footer.className = 'sticky-bottom visible'
+        footer.className = 'fixed-bottom visible'
     }
 }
 
 // Carica la pagina con gli elementi
 async function loadOrdine(){
-    var stato = getCookie('status');
-    if(stato != ''){
+    var stato = getCookie('status_ordine');
+    console.log(stato);
+    if(stato != 'inviato'){
         var ordine = getCookie('ordine');
-        var ordine = JSON.parse(ordine);
-        var menu;
-        var error;
-        var res
-        try{
-            res = await fetch('/cliente/getMenu', {
-                method: "GET"
-            });
-        } catch(err){
-            console.log(err);
-            error = err;
-        }
-        if(!error){
-            menu = await res.json();
-            var prezzo = 0;
-            for(elem of ordine.ordine){
-                for(piet of menu){
-                    if(elem.pietanza == piet._id){
-                        prezzo += piet.prezzo * elem.qta;
-                        showPietanza(piet, elem.qta);
+        if(ordine != ''){
+            var ordine = JSON.parse(ordine);
+            var menu;
+            var error;
+            var res
+            try{
+                res = await fetch('/cliente/getMenu', {
+                    method: "GET"
+                });
+            } catch(err){
+                console.log(err);
+                error = err;
+            }
+            if(!error){
+                menu = await res.json();
+                var prezzo = 0;
+                for(elem of ordine.ordine){
+                    for(piet of menu){
+                        if(elem.pietanza == piet._id){
+                            prezzo += piet.prezzo * elem.qta;
+                            showPietanza(piet, elem.qta);
+                        }
                     }
                 }
+                var prezzo_component = document.getElementById('prezzo');
+                prezzo_component.innerHTML = `${prezzo}€`;
+                var footer = document.getElementById('footer_container');
+                footer.className = 'fixed-bottom visible'
             }
-            var prezzo_component = document.getElementById('prezzo');
-            prezzo_component.innerHTML = `${prezzo}€`;
-            var footer = document.getElementById('footer_container');
-            footer.className = 'sticky-bottom visible'
+        }
+        else{
+            window.location.href = '/cliente/menu';
         }
     }
     else{
-        window.location.href = '/cliente/menu'
+        window.location.href = '/cliente/menu';
     }
+        
 }
