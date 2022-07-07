@@ -146,7 +146,7 @@ router.get('/ordine/:id', async (req, res)=>{
     }
     else{
         //  console.log(menu_json);
-        res.render('ordine', {ordine: ordine_json});
+        res.render('ordineCameriera', {ordine: ordine_json});
     }
 });
 

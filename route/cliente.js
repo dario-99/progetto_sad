@@ -94,5 +94,14 @@ router.get('/menu', async (req, res)=>{
     }
 });
 
+/*
+    METHOD: GET
+    INPUT: None
+    RESPONSE: Pagina html renderizzata da ejs, contenente l'ordine del cliente
+*/
+router.get('/ordine', async (req, res)=>{
+    res.render('ordineCliente');
+});
+
 // export router
 module.exports = router
