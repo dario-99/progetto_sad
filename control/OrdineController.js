@@ -83,8 +83,26 @@ const getOrdineByID = async function(id){
     }
 }
 
+/*
+    *Input: id dell ordine
+    *Output: ok response se è andata a buon fine altrimenti throw error
+    *Description: Elimina un ordine sul db
+*/
+const removeOrdine = async function(id){
+    var error;
+    try{
+        await Ordine.deleteOne({_id : id});
+    } catch(err){
+        error = err;
+    }
+    if(error){
+        throw new Error(error);
+    }
+}
+
 module.exports = {
     insertOrdine,
     getOrdini,
-    getOrdineByID
+    getOrdineByID,
+    removeOrdine
 };

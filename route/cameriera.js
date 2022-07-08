@@ -12,6 +12,7 @@
         L /insertPietanza *POST, JSON_PIETANZA*
         L /removePietanza *DELETE, ID pietanza*
         L /getOrdini      *GET, NO_INPUT*
+        L /removeOrdine   *DELETE, ID ordine*
 */
 
 // import esterni
@@ -47,6 +48,29 @@ router.get('/getOrdini', async (req,res)=>{
     }
     else{
         res.status(200).send({status: 'ok', error: '', ordini: _ordini});
+    }
+});
+
+/*
+    METHOD: delete
+    INPUT: Id ordine
+    RESPONSE: ok in caso di corretta eliminazione, errore altrimenti
+    DESCRIPTION: Richiama il controller chiamando il metodo removeOrdine
+*/
+router.delete('/removeOrdine', async (req,res)=>{
+    var error;
+    var id = req.body.id;
+    try{
+        await OrdineController.removeOrdine(id);
+    } catch(err){
+        error = err;
+    }
+    // in caso di errore invia le stringhe relative agli errori
+    if(error){
+        res.status(500).send({status: 'error', error: error.message});
+    }
+    else{
+        res.status(200).send({status: 'ok', error: ''});
     }
 });
 

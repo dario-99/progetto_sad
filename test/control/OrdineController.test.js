@@ -178,4 +178,29 @@ describe('Ordine Controller', ()=>{
             }
         });
     });
+    describe('test removeOrdine', ()=>{
+        it('remove ordine presente', async ()=>{
+            try{
+                var lista_ordini = await OrdineController.getOrdini();
+                var ordine = await OrdineController.getOrdineByID(lista_ordini[0]._id);
+            } catch(err){
+                assert.ok(false, "trovato errore quando dovrebbe semplicemente prendere l'ordine");
+            }
+            var error;
+            try{
+                await OrdineController.removeOrdine(ordine._id);
+            } catch(err){
+                assert.ok(false, 'Trovato errore quando non doveva in remove ordine ');
+            }
+        });
+        it('remove ordine non presente', async ()=>{
+            var error;
+            try{
+                await OrdineController.removeOrdine("123asdad");
+            } catch(err){
+                error = err;
+            }
+            assert.equal(error.message, "CastError: Cast to ObjectId failed for value \"123asdad\" (type string) at path \"_id\" for model \"Ordine\"");
+        });
+    });
 });
