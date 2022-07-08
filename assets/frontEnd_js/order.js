@@ -48,12 +48,13 @@ function aggiungi_pietanza(id){
             obj = {ordine : [{qta:1, pietanza:id}]};
         }
         setCookie('ordine', JSON.stringify(obj), 1);
+        window.location.href = '/cliente/ordine';
     }
 };
 
 // Funzione per incrementare del valore in input la qta della pietanza nell'ordine
 // Accetta anche incrementi negativi, se è minore di 0 elimina totalemente la pietanza
-function incrementQta(id, inc){
+async function incrementQta(id, inc){
     var ordine = getCookie('ordine');
     var obj;
     if(ordine != ''){
@@ -65,7 +66,13 @@ function incrementQta(id, inc){
                 obj.ordine[i].qta += inc;
                 if(obj.ordine[i].qta <= 0){
                     obj.ordine.splice(i, 1);
+                    var pietanzaCont = document.getElementById(`${id}`);
+                    pietanzaCont.remove();
                 }
+                else{
+                    var qtaCont = document.getElementById(`qta_${id}`);
+                    qtaCont.innerHTML = obj.ordine[i].qta;
+                }                
             }
         }
         if(!cond){
@@ -76,6 +83,7 @@ function incrementQta(id, inc){
         throw new Error('pietanza cookie non presente');
     }
     setCookie('ordine', JSON.stringify(obj), 1);
+    await calcolaPrezzo();
 }
 
 // Invia ordine al backend
@@ -98,23 +106,42 @@ function inviaOrdine(){
 
 const showPietanza = function(pietanza, qta){
     var pietanze_component = document.getElementById('pietanze');
-    var div = document.createElement('div');
-    div.className = "col my-3";
-    var card = document.createElement('div');
-    card.className = "card border border-3 rounded-pill";
-    card.style['border-color'] = '#f2bf17 !important';
-    card.id = pietanza._id;
-    var cardBody = document.createElement('div');
-    cardBody.className = "card-body rounded-pill bg-dark text-white";
-    cardBody.innerHTML = `${pietanza.nome}, qta: ${qta}, ingredienti: ${pietanza.ingredienti}`;
-
-    card.appendChild(cardBody);
-    div.appendChild(card);
-    pietanze_component.appendChild(div);
+    pietanze_component.innerHTML += `
+        <div class="col-11 my-2" id="${pietanza._id}">
+            <div class="card border border-3 bg-dark" style="border-color:#f2bf17 !important" >
+                <div class="row card-body rounded-pill text-white">
+                    <div class="col-2">
+                        <img src="/assets/panino.png" class="img-fluid mt-1">
+                    </div>
+                    <div class="col text-center my-auto text-uppercase text-break fs-6" >
+                        ${pietanza.nome}
+                    </div>
+                    <div class="col-4">
+                        <div class="row text-center">
+                            <button type="button" class="btn btn-primary col-2 bg-light btn-square text-black" onclick="incrementQta('${pietanza._id}', -1)">
+                                -
+                            </button>
+                            <div class="col fs-5 text-center mx-0 px-0" id="qta_${pietanza._id}">
+                                ${qta}
+                            </div>
+                            <button type="button" class="btn btn-primary col-2 bg-light btn-square text-black" onclick="incrementQta('${pietanza._id}', 1)">
+                                +
+                            </button>
+                        </div>
+                        <div class="row mt-10">
+                            <div class="col text-center fs-5">
+                                ${qta*pietanza.prezzo}€
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 async function calcolaPrezzo(){
-    var ordine = getCookie('ordine');
+    var ordine = JSON.parse(getCookie('ordine'));
     var menu;
     var error;
     var res

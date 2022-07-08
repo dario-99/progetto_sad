@@ -7,9 +7,14 @@
     <body class="bg-dark pb-3" style="font-family:'Work Sans', sans-serif;">
         <%- include('partials/navbar_cliente'); %>
         <!--Panini-->
-        <div class="container-fluid bg-dark" onload="loadOrdine()">
-            <div class="row-0" id="pietanze">
-                
+        <div class="row mb-1">
+            <div class="col text-center fs-1 text-uppercase text-white" style="color:#f2bf17 !important">
+                ordine
+            </div>
+        </div>
+        <div class="container-fluid bg-dark" >
+            <div class="row justify-content-center" id="pietanze">
+                <!-- Pietanze ordine -->
             </div>
         </div>
         <div class="container-fluid">
@@ -17,6 +22,6 @@
         </div>
     </body>
     <script>
-        window.onload =loadOrdine;
+        window.onload = loadOrdine;
     </script>
 </html>
