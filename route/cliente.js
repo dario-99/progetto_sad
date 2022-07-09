@@ -54,8 +54,9 @@ router.get('/getMenu', async (req, res)=>{
 */
 router.post('/insertOrdine', async (req, res)=>{
     var error;
+    var idOrdine;
     try{
-        await OrdineController.insertOrdine(req.body);
+        idOrdine = await OrdineController.insertOrdine(req.body);
     } catch(err){
         error = err;
     }
@@ -64,7 +65,7 @@ router.post('/insertOrdine', async (req, res)=>{
         res.status(500).send({status:'error', error: error.message});
     }
     else{
-        res.send({status:'ok', error:''});
+        res.send({status:'ok', error:'', id: idOrdine});
     }
 });
 

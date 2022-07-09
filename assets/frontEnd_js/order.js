@@ -89,19 +89,26 @@ async function incrementQta(id, inc){
 // Invia ordine al backend
 function inviaOrdine(){
     var data = getCookie('ordine');
-    console.log(data);
-    fetch("/cliente/insertOrdine", {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'}, 
-        body: data
-    })
-    .then(res => {
-        setCookie('status_ordine', 'inviato', 1);
-        window.location.href = '/cliente/menu';
-    })
-    .catch(err => {
+    if(data && data.ordine){
+        fetch("/cliente/insertOrdine", {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'}, 
+            body: data
+        })
+        .then(async (res) => {
+            var ordine = await res.json();
+            setCookie('status_ordine', 'inviato', 1);
+            setCookie('id_ordine', ordine.id, 1);
+            window.location.href = '/cliente/menu';
+        })
+        .catch(err => {
+            alert('Errore invio ordine!');
+        });
+    }
+    else{
         alert('Errore invio ordine!');
-    });
+        window.location.href = '/cliente/menu';
+    }
 }
 
 const showPietanza = function(pietanza, qta){
@@ -167,8 +174,6 @@ async function calcolaPrezzo(){
         }
         var prezzo_component = document.getElementById('prezzo');
         prezzo_component.innerHTML = `${prezzo}€`;
-        var footer = document.getElementById('footer_container');
-        footer.className = 'fixed-bottom visible'
     }
 }
 
@@ -204,12 +209,7 @@ async function loadOrdine(){
                 }
                 var prezzo_component = document.getElementById('prezzo');
                 prezzo_component.innerHTML = `${prezzo}€`;
-                var footer = document.getElementById('footer_container');
-                footer.className = 'fixed-bottom visible'
             }
-        }
-        else{
-            window.location.href = '/cliente/menu';
         }
     }
     else{

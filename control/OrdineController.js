@@ -44,7 +44,8 @@ const insertOrdine = async function(ordine){
     }
     else{
         const order = new Ordine(ordine);
-        order.save();
+        var ordineSalvato = await order.save();
+        return ordineSalvato._id;
     }
 }
 
