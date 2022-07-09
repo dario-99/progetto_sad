@@ -1,17 +1,35 @@
-<footer class="sticky-bottom invisible" id="footer_container" onclick="inviaOrdine()">
-    <div class="row" style="background: #f2bf17 !important;">
-        <!-- CONFERMA -->
-        <div class="text-center col align-self-center" style="font-size: 20px !important;">
-            <div>
-                CONFERMA:
-            </div>
-            <div class="text-center p-2 ">
-                <div id="prezzo">
-                    0.0$
+<footer>
+    <button type="button" class="btn btn-primary" class="btn btn-primary sticky-bottom invisible" id="footer_container" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div class="row" style="background: #f2bf17 !important;">
+            <!-- CONFERMA -->
+            <div class="text-center col align-self-center" style="font-size: 20px !important;">
+                <div>
+                    CONFERMA:
+                </div>
+                <div class="text-center p-2 ">
+                    <div id="prezzo">
+                        0.0$
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- PREZZO -->
-        
+    </button>
+      <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" style="color: #f2bf17 !important;">CONFERMA ORDINE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-white">
+                    Sei sicuro di voler inviare l'ordine in cucina?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="inviaOrdine()">Invia ordine</button>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
