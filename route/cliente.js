@@ -12,6 +12,7 @@
         L /getMenu        *GET,NO_INPUT*
         L /insertOrdine   *POST, JSON_ORDINE*  
         L /menu           *GET, NO_INPUT*
+        L /getStatoOrdine *GET, ID ordine*
 */
 
 // import esterni
@@ -66,6 +67,22 @@ router.post('/insertOrdine', async (req, res)=>{
     }
     else{
         res.send({status:'ok', error:'', id: idOrdine});
+    }
+});
+
+/*
+    METHOD: GET
+    INPUT: Id ordine
+    RESPONSE: Status dell'ordine
+*/
+router.get('/getStatoOrdine/:id', async (req, res)=>{
+    try{
+        const ordine = await OrdineController.getOrdineByID(req.params.id);
+        res.send({status: 'ok', error: '', stato: ordine.status});
+    }
+    catch(err){
+        // In caso di errore inviamo msg HTTP con status 500
+        res.status(500).send({status: 'error', error:'Errore richiesta stato'});
     }
 });
 

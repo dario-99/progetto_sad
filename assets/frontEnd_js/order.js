@@ -71,7 +71,7 @@ async function incrementQta(id, inc){
                 }
                 else{
                     var qtaCont = document.getElementById(`qta_${id}`);
-                    qtaCont.innerHTML = obj.ordine[i].qta;
+                    qtaCont.innerHTML = `${obj.ordine[i].qta} X`;
                 }                
             }
         }
@@ -86,28 +86,42 @@ async function incrementQta(id, inc){
     await calcolaPrezzo();
 }
 
+function clearOrdine(){
+    var data = getCookie('ordine');
+    if(data != ''){
+        dataJSON = JSON.parse(data);
+        for(elem of dataJSON.ordine){
+            var container = document.getElementById(`${elem.pietanza}`);
+            container.remove();
+        }
+    }
+}
+
 // Invia ordine al backend
 function inviaOrdine(){
     var data = getCookie('ordine');
-    if(data && data.ordine){
-        fetch("/cliente/insertOrdine", {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'}, 
-            body: data
-        })
-        .then(async (res) => {
-            var ordine = await res.json();
-            setCookie('status_ordine', 'inviato', 1);
-            setCookie('id_ordine', ordine.id, 1);
-            window.location.href = '/cliente/menu';
-        })
-        .catch(err => {
-            alert('Errore invio ordine!');
-        });
+    if(data != ''){
+        dataJSON = JSON.parse(data);
+        if(dataJSON && dataJSON.ordine.length > 0){
+            fetch("/cliente/insertOrdine", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'}, 
+                body: data
+            })
+            .then(async (res) => {
+                var ordine = await res.json();
+                setCookie('status_ordine', 'inviato', 1);
+                setCookie('id_ordine', ordine.id, 1);
+                clearOrdine();
+                loadOrdine();
+            })
+            .catch(err => {
+                alert('Errore invio ordine!');
+            });
+        }
     }
     else{
         alert('Errore invio ordine!');
-        window.location.href = '/cliente/menu';
     }
 }
 
@@ -125,13 +139,13 @@ const showPietanza = function(pietanza, qta){
                     </div>
                     <div class="col-4">
                         <div class="row text-center">
-                            <button type="button" class="btn btn-primary col-2 bg-light btn-square text-black" onclick="incrementQta('${pietanza._id}', -1)">
+                            <button type="button" class="btn btn-primary col-2 bg-light btn-square text-black" onclick="incrementQta('${pietanza._id}', -1)" id="-_${pietanza._id}">
                                 -
                             </button>
                             <div class="col fs-5 text-center mx-0 px-0" id="qta_${pietanza._id}">
-                                ${qta}
+                                ${qta} X
                             </div>
-                            <button type="button" class="btn btn-primary col-2 bg-light btn-square text-black" onclick="incrementQta('${pietanza._id}', 1)">
+                            <button type="button" class="btn btn-primary col-2 bg-light btn-square text-black" onclick="incrementQta('${pietanza._id}', 1)" id="+_${pietanza._id}">
                                 +
                             </button>
                         </div>
@@ -180,40 +194,44 @@ async function calcolaPrezzo(){
 // Carica la pagina con gli elementi
 async function loadOrdine(){
     var stato = getCookie('status_ordine');
-    console.log(stato);
-    if(stato != 'inviato'){
-        var ordine = getCookie('ordine');
-        if(ordine != ''){
-            var ordine = JSON.parse(ordine);
-            var menu;
-            var error;
-            var res
-            try{
-                res = await fetch('/cliente/getMenu', {
-                    method: "GET"
-                });
-            } catch(err){
-                console.log(err);
-                error = err;
-            }
-            if(!error){
-                menu = await res.json();
-                var prezzo = 0;
-                for(elem of ordine.ordine){
-                    for(piet of menu){
-                        if(elem.pietanza == piet._id){
-                            prezzo += piet.prezzo * elem.qta;
-                            showPietanza(piet, elem.qta);
-                        }
+    var ordine = getCookie('ordine');
+    if(ordine != ''){
+        var ordineJSON = JSON.parse(ordine);
+        var menu;
+        var error;
+        var res
+        try{
+            res = await fetch('/cliente/getMenu', {
+                method: "GET"
+            });
+        } catch(err){
+            console.log(err);
+            error = err;
+        }
+        if(!error){
+            menu = await res.json();
+            var prezzo = 0;
+            for(elem of ordineJSON.ordine){
+                for(piet of menu){
+                    if(elem.pietanza == piet._id){
+                        prezzo += piet.prezzo * elem.qta;
+                        showPietanza(piet, elem.qta);
                     }
                 }
-                var prezzo_component = document.getElementById('prezzo');
-                prezzo_component.innerHTML = `${prezzo}€`;
             }
+            var prezzo_component = document.getElementById('prezzo');
+            prezzo_component.innerHTML = `${prezzo}€`;
         }
     }
-    else{
-        window.location.href = '/cliente/menu';
-    }
-        
+    if(stato != ''){
+        var prezzoComponent = document.getElementById('footer_container');
+        prezzoComponent.className = "invisible";
+        var ordineJSON = JSON.parse(ordine);
+        for(elem of ordineJSON.ordine){
+            var meno_container = document.getElementById(`-_${elem.pietanza}`);
+            meno_container.remove();
+            var piu_container = document.getElementById(`+_${elem.pietanza}`);
+            piu_container.remove();
+        }
+    }   
 }
