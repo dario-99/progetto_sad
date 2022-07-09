@@ -191,6 +191,11 @@ async function calcolaPrezzo(){
     }
 }
 
+function updateStatus(status){
+    var titolo = document.getElementById('titolo_ordine');
+    titolo.innerHTML = `ordine: ${status}`;
+}
+
 // Carica la pagina con gli elementi
 async function loadOrdine(){
     var stato = getCookie('status_ordine');
@@ -232,6 +237,21 @@ async function loadOrdine(){
             meno_container.remove();
             var piu_container = document.getElementById(`+_${elem.pietanza}`);
             piu_container.remove();
+        }
+        var ordine_id = getCookie('id_ordine');
+        var res;
+        try{
+            res = await fetch(`/cliente/getStatoOrdine/${ordine_id}`, {
+                method: "GET"
+            });
+        } catch(err){
+            console.log(err);
+            error = err;
+        }
+        res = await res.json();
+        console.log(res);
+        if(res.status == 'ok'){
+            updateStatus(res.stato);
         }
     }   
 }
