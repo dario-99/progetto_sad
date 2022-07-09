@@ -129,7 +129,7 @@ const showPietanza = function(pietanza, qta){
                             </button>
                         </div>
                         <div class="row mt-10">
-                            <div class="col text-center fs-5">
+                            <div class="col text-center fs-5" id="prezzo_${pietanza._id}">
                                 ${qta*pietanza.prezzo}€
                             </div>
                         </div>
@@ -160,6 +160,8 @@ async function calcolaPrezzo(){
             for(piet of menu){
                 if(elem.pietanza == piet._id){
                     prezzo += piet.prezzo * elem.qta;
+                    var prezzo_pietanza = document.getElementById(`prezzo_${elem.pietanza}`);
+                    prezzo_pietanza.innerHTML = `${piet.prezzo * elem.qta}€`;
                 }
             }
         }

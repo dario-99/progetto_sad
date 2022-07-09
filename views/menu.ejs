@@ -18,11 +18,20 @@
                     <div class="col-11 my-2">
                         <div class="card border border-3 bg-dark" style="border-color:#f2bf17 !important" id="<%= elem.id %>">
                             <div class="row card-body rounded-pill text-white">
-                                <div class="col-3">
+                                <div class="col-2">
                                     <img src="..\..\assets\panino.png" class="img-fluid mt-1">
                                 </div>
-                                <div class="col text-center my-auto text-uppercase text-break fs-6" >
-                                        <%= elem.nome %> 
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col text-center my-auto text-uppercase text-break fs-3" style="color:#f2bf17 !important">
+                                            <%= elem.nome %> 
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col text-center my-auto text-break" style="font-size: 10px;">
+                                            <%= elem.ingredienti %> 
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="row">
