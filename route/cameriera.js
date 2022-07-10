@@ -13,6 +13,8 @@
         L /removePietanza *DELETE, ID pietanza*
         L /getOrdini      *GET, NO_INPUT*
         L /removeOrdine   *DELETE, ID ordine*
+        L /getOrdine/:id  *GET, ID ordine*
+        L /cambioStato    *POST, ID ordine e stato*
 */
 
 // import esterni
@@ -48,6 +50,32 @@ router.get('/getOrdini', async (req,res)=>{
     }
     else{
         res.status(200).send({status: 'ok', error: '', ordini: _ordini});
+    }
+});
+
+/*
+    METHOD: GET
+    INPUT: ID ordine
+    RESPONSE: Invia json dell ordine con id specificato
+    DESCRIPTION: Richiama il controller e richiama il metodo per ottenere l'ordine con l'id specificato
+*/
+router.get('/getOrdine/:id', async (req,res)=>{
+    var error;
+    var ordine_json;
+    try{
+        // Richiamo controller per effettuare il retrieve di tutte le pietanze
+        ordine_json = await OrdineController.getOrdineByID(req.params.id);
+    }
+    catch(err){
+        // In caso di errore inviamo msg HTTP con status 500
+        error = err;
+    }
+    if(error){
+        res.status(500).send({status: 'error', error:'Errore richiesta pagina ordine!'});
+    }
+    else{
+        //  console.log(menu_json);
+        res.send({status: 'ok', error:'', ordine: ordine_json});
     }
 });
 
@@ -104,7 +132,7 @@ router.post('/insertPietanza', async (req,res)=>{
 */
 router.delete('/removePietanza', async (req, res)=>{
     var error;
-    id = req.body._id;
+    var id = req.body._id;
     if (id){
         try{
             await PietanzeController.removePietanzaByID(id);
@@ -114,6 +142,33 @@ router.delete('/removePietanza', async (req, res)=>{
         }
     }else{
         error = ["Nessun id presente"];
+    }
+    if(error){
+        res.status(500).send({status: 'error', error : error.message});
+    }
+    else{
+        res.send({status: 'ok', error: ''});
+    }
+});
+
+/*
+    METHOD: DELETE
+    INPUT: json con campo _id con l'id del panino da eliminare
+    RESPONSE: status ok in caso di corretta eliminazione, error altrimenti
+*/
+router.post('/cambioStato', async (req, res)=>{
+    var error;
+    var id = req.body.id;
+    var stato = req.body.stato;
+    if (id && stato){
+        try{
+            await OrdineController.cambiaStato(id, stato);
+        }
+        catch(err){
+            error = err;
+        }
+    }else{
+        error = ["Nessun id o stato presente"];
     }
     if(error){
         res.status(500).send({status: 'error', error : error.message});

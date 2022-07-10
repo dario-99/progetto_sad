@@ -192,6 +192,9 @@ async function calcolaPrezzo(){
 }
 
 function updateStatus(status){
+    if(status == 'in_preparazione'){
+        status = 'in preparazione';
+    }
     var titolo = document.getElementById('titolo_ordine');
     titolo.innerHTML = `ordine: ${status}`;
 }

@@ -2,23 +2,72 @@
 <html lang="it">
     <head>
         <%- include('partials/head'); %> 
+        <script src="../../assets/frontEnd_js/cameriera_Ordine.js"></script>
         <title>Ordine</title>
     </head>
     <body class="bg-dark" style="font-family:'Work Sans', sans-serif;">
         <%- include('partials/navbar_cameriera'); %> 
         <!--Panini-->
+        <div class="row mb-1">
+            <div class="col text-center fs-2 text-uppercase text-white text-break" style="color:#f2bf17 !important">
+                <%= ordine._id%>
+            </div>
+        </div>
         <div class="container-fluid bg-dark">
-            <div class="row-0">
-                <% ordine.ordine.forEach(elem => { %>
-                    <div class="col my-3">
-                        <div class="card border border-3 rounded-pill" style="border-color:#f2bf17 !important" id="<%= elem.id %> ">
-                            <div class="card-body rounded-pill bg-dark text-white">
-                                ordine n. <%= elem._id %>, qta = <%= elem.qta %>
-                            </div>
-                        </div>
-                    </div>
-                <% }) %>
+            <div class="row justify-content-center" id="pietanze_container">
+                
             </div>
         </div>
     </body>
+    <div class="container-fluid">
+        <footer>
+            <button type="button" class="btn fixed-bottom" id="footer_container" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <div class="row" style="background: #f2bf17 !important;">
+                    <!-- CONFERMA -->
+                    <div class="text-center col align-self-center py-3" style="font-size: 20px !important;">
+                        CAMBIA STATO
+                    </div>
+                </div>
+            </button>
+              <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel" style="color: #f2bf17 !important;">
+                                Stato Attuale 
+                                <% if (ordine.status == 'new') { %>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="green" width="10%" height="10%" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="8"/>
+                                      </svg>
+                                <% } %>
+                                <% if (ordine.status == 'in_preparazione') { %>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#f2bf17" width="10%" height="10%" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="8"/>
+                                      </svg>
+                                <% } %>
+                                <% if (ordine.status == 'completato') { %>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="red" width="10%" height="10%" class="bi bi-circle-fill" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="8"/>
+                                      </svg>
+                                <% } %>
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-white">
+                            Scegli lo stato da applicare all' ordine
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="changeStato('<%= ordine._id%>', 'new')">New</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="changeStato('<%= ordine._id%>', 'in_preparazione')">In preparazione</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="changeStato('<%= ordine._id%>', 'completato')">Completato</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script>
+        window.onload = loadOrdine('<%= ordine._id%>');
+    </script>
 </html>

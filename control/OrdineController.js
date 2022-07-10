@@ -101,9 +101,27 @@ const removeOrdine = async function(id){
     }
 }
 
+/*
+    *Input: id dell ordine e stato
+    *Output: ok response se è andata a buon fine altrimenti throw error
+    *Description: Cambia lo stato nell'ordine specificato con l'id
+*/
+const cambiaStato = async function(id, stato){
+    var error;
+    try{
+        await Ordine.updateOne({_id: id}, {status: stato});
+    } catch(err){
+        error = err;
+    }
+    if(error){
+        throw new Error(error);
+    }
+}
+
 module.exports = {
     insertOrdine,
     getOrdini,
     getOrdineByID,
-    removeOrdine
+    removeOrdine,
+    cambiaStato
 };
