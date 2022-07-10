@@ -75,3 +75,28 @@ async function changeStato(id, stato){
         }
     }
 }
+
+async function eliminaOrdine(id){
+    var res;
+    var error;
+    var data = JSON.stringify({id: id});
+    try{
+        var res = await fetch('/cameriera/removeOrdine',{
+            method: "DELETE",
+            headers: {'Content-Type': 'application/json'}, 
+            body: data
+        });
+    } catch(err){
+        console.log(err);
+        error = err;
+        alert("errore eliminazione ordine");
+    }
+    if(!error){
+        res = res.json();
+        if(res.status == 'error'){
+            alert("errore eliminazione ordine");
+        } else{
+            window.location.href = '/cameriera/ordini';
+        }
+    }
+}

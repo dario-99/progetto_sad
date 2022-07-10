@@ -256,5 +256,10 @@ async function loadOrdine(){
         if(res.status == 'ok'){
             updateStatus(res.stato);
         }
+        else{
+            setCookie('ordine', '', 1);
+            setCookie('id_ordine', '', 1);
+            setCookie('status_ordine', '', 1);
+        }
     }   
 }

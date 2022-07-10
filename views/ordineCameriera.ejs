@@ -61,6 +61,7 @@
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="changeStato('<%= ordine._id%>', 'new')">New</button>
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="changeStato('<%= ordine._id%>', 'in_preparazione')">In preparazione</button>
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="changeStato('<%= ordine._id%>', 'completato')">Completato</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="eliminaOrdine('<%= ordine._id%>')">Elimina ordine</button>
                         </div>
                     </div>
                 </div>
