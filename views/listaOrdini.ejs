@@ -14,6 +14,25 @@
         <!--Panini-->
         <div class="container-fluid bg-dark">
             <div class="row justify-content-center">
+                <% ordini.sort((a,b)=>{
+                    if(a.status == b.status){
+                        if(a.date < b.date){
+                            return 1;
+                        }
+                        if(a.date > b.date){
+                            return -1;
+                        }
+                        return 0;
+                    }
+                    if(a.status == 'new' && (b.status == 'in_preparazione' || b.status == 'completato')){
+                        return -1;
+                    }
+                    if(a.status == 'in_preparazione' && (b.status == 'completato')){
+                        return -1;
+                    }
+                    return 1;
+                });
+                %>
                 <% ordini.forEach(elem => { %>
                     <div class="col-11 my-2" id="<%= elem._id %>" onclick="location.href='/cameriera/ordine/<%= elem._id %>'">
                         <div class="card border border-3 bg-dark" style="border-color:#f2bf17 !important" >
