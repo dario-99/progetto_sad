@@ -13,6 +13,7 @@
         L /insertOrdine   *POST, JSON_ORDINE*  
         L /menu           *GET, NO_INPUT*
         L /getStatoOrdine *GET, ID ordine*
+        L /setToken       *GET, jwt token*
 */
 
 // import esterni
@@ -21,6 +22,7 @@ const express = require('express')
 // import controller
 const PietanzeController = require('../control/PietanzeController');
 const OrdineController = require('../control/OrdineController');
+const Authenticator = require('../middleware/auth');
 
 //  Crezione Router esportabile alla fine del codice, in modo da essere usato come
 //  Router nell'entry point
@@ -34,7 +36,7 @@ const router = express.Router();
     INPUT: None
     RESPONSE: Menu JSON
 */
-router.get('/getMenu', async (req, res)=>{
+router.get('/getMenu', Authenticator.authenticateTokenTavolo, async (req, res)=>{
     try{
         // Richiamo controller per effettuare il retrieve di tutte le pietanze
         const menu_json = await PietanzeController.getMenu();
@@ -53,7 +55,7 @@ router.get('/getMenu', async (req, res)=>{
     RESPONSE: status della richiesta, ok se corretta error altrimenti
     DESCRIPTION: Tramite richiesta http, inseriamo l'ordine specificato dall'utente all'interno del DB.
 */
-router.post('/insertOrdine', async (req, res)=>{
+router.post('/insertOrdine', Authenticator.authenticateTokenTavolo, async (req, res)=>{
     var error;
     var idOrdine;
     try{
@@ -75,7 +77,7 @@ router.post('/insertOrdine', async (req, res)=>{
     INPUT: Id ordine
     RESPONSE: Status dell'ordine
 */
-router.get('/getStatoOrdine/:id', async (req, res)=>{
+router.get('/getStatoOrdine/:id', Authenticator.authenticateTokenTavolo, async (req, res)=>{
     try{
         const ordine = await OrdineController.getOrdineByID(req.params.id);
         res.send({status: 'ok', error: '', stato: ordine.status});
@@ -86,13 +88,26 @@ router.get('/getStatoOrdine/:id', async (req, res)=>{
     }
 });
 
+/*
+    METHOD: GET
+    INPUT: jwt token
+    RESPONSE: Salva il token nei cookie del cliente, in modo da autenticare il cliente
+*/
+router.get('/setToken/:token', async (req, res)=>{
+    res.cookie('ordine', '');
+    res.cookie('status_ordine', '');
+    res.cookie('id_ordine', '');
+    res.cookie('token', req.params.token);
+    res.redirect('/cliente/menu');
+});
+
 // -----------------------------------------PAGINE STATICHE---------------------------------------
 /*
     METHOD: GET
     INPUT: None
     RESPONSE: Pagina html renderizzata da ejs, contenente il menu
 */
-router.get('/menu', async (req, res)=>{
+router.get('/menu', Authenticator.authenticateTokenTavolo, async (req, res)=>{
     var error;
     var menu_json;
     try{
@@ -117,8 +132,17 @@ router.get('/menu', async (req, res)=>{
     INPUT: None
     RESPONSE: Pagina html renderizzata da ejs, contenente l'ordine del cliente
 */
-router.get('/ordine', async (req, res)=>{
+router.get('/ordine', Authenticator.authenticateTokenTavolo, async (req, res)=>{
     res.render('ordineCliente');
+});
+
+/*
+    METHOD: GET
+    INPUT: None
+    RESPONSE: Pagina html Di default in caso non si abbia l'autorizzazione ad accedere al sito
+*/
+router.get('/defaultCliente', async (req, res)=>{
+    res.render('defaultCliente');
 });
 
 // export router

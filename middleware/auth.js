@@ -10,7 +10,7 @@ const camerieraModel = require('../model/Cameriera');
 const jwt = require('jsonwebtoken');
 
 function generateAccessTokenTavolo(tavolo) {
-    return jwt.sign(tavolo, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    return jwt.sign(tavolo, `${process.env.ACCESS_TOKEN_SECRET}`);
 }
 
 async function authCamerieraLogin(req, res, next) {
@@ -30,11 +30,11 @@ async function authCamerieraLogin(req, res, next) {
 function authenticateTokenTavolo(req, res, next) {
     const token = req.cookies['token'];
     if (token == null) 
-        return res.sendStatus(401);
+        return res.redirect('/cliente/defaultCliente');
   
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err)
-            return res.sendStatus(403);
+            return res.redirect('/cliente/defaultCliente');
         req.user = user;
         next();
     })
@@ -47,7 +47,7 @@ function authenticateTokenCameriera(req, res, next) {
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err)
-            return res.sendStatus(403);
+            return res.redirect('/cameriera/loginPage');
         req.user = user;
         next();
     })
