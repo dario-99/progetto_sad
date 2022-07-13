@@ -256,7 +256,8 @@ router.get('/loginPage', async (req, res)=>{
 */
 router.get('/qrcode', Authenticator.authenticateTokenCameriera, async (req, res)=>{
     var token = Authenticator.generateAccessTokenTavolo(Math.floor(Math.random()*100));
-    var ip = 'http://192.168.1.82:3000'
+    // var ip = 'http://192.168.1.82:3000';
+    var ip = process.env.IP;
     res.render('qrcode', {token:token, ip:ip});
 });
 // export router
