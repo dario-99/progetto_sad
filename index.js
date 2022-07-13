@@ -15,7 +15,7 @@ require('dotenv').config();
 // Utility functions
 
 // Porta di default 3000, altrimenti si richiede dal file di configurazione .env
-const port = process.env.PORT | 3000;
+const port = process.env.PORT || 3000;
 // URI per server mongoDB, usato per connettersi al server
 const dbURI = process.env.DBURI;
 
