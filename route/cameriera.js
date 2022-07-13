@@ -23,6 +23,7 @@ const express = require('express')
 // import controller
 const PietanzeController = require('../control/PietanzeController');
 const OrdineController = require('../control/OrdineController');
+const Authenticator = require('../middleware/auth');
 
 //  Crezione Router esportabile alla fine del codice, in modo da essere usato come
 //  Router nell'entry point
@@ -36,7 +37,7 @@ const router = express.Router();
     RESPONSE: Invia json degli ordini immagazzinati
     DESCRIPTION: Richiama il controller e richiama il metodo per ottenere la lista di tutti gli ordini presenti
 */
-router.get('/getOrdini', async (req,res)=>{
+router.get('/getOrdini', Authenticator.authenticateTokenCameriera, async (req,res)=>{
     var error;
     var _ordini;
     try{
@@ -59,7 +60,7 @@ router.get('/getOrdini', async (req,res)=>{
     RESPONSE: Invia json dell ordine con id specificato
     DESCRIPTION: Richiama il controller e richiama il metodo per ottenere l'ordine con l'id specificato
 */
-router.get('/getOrdine/:id', async (req,res)=>{
+router.get('/getOrdine/:id', Authenticator.authenticateTokenCameriera, async (req,res)=>{
     var error;
     var ordine_json;
     try{
@@ -85,7 +86,7 @@ router.get('/getOrdine/:id', async (req,res)=>{
     RESPONSE: ok in caso di corretta eliminazione, errore altrimenti
     DESCRIPTION: Richiama il controller chiamando il metodo removeOrdine
 */
-router.delete('/removeOrdine', async (req,res)=>{
+router.delete('/removeOrdine', Authenticator.authenticateTokenCameriera, async (req,res)=>{
     var error;
     var id = req.body.id;
     try{
@@ -108,7 +109,7 @@ router.delete('/removeOrdine', async (req,res)=>{
     RESPONSE: invia json di risposta, status ok in caso di corretto inserimento, error in caso di errori con una lista degli errori 
     DESCRIPTION: richiamare controller, parsing e validazione json, invio ok response o error
 */
-router.post('/insertPietanza', async (req,res)=>{
+router.post('/insertPietanza', Authenticator.authenticateTokenCameriera, async (req,res)=>{
     var error = null;
     try{
         await PietanzeController.insertPietanza(req.body);
@@ -130,7 +131,7 @@ router.post('/insertPietanza', async (req,res)=>{
     INPUT: json con campo _id con l'id del panino da eliminare
     RESPONSE: status ok in caso di corretta eliminazione, error altrimenti
 */
-router.delete('/removePietanza', async (req, res)=>{
+router.delete('/removePietanza', Authenticator.authenticateTokenCameriera, async (req, res)=>{
     var error;
     var id = req.body._id;
     if (id){
@@ -156,7 +157,7 @@ router.delete('/removePietanza', async (req, res)=>{
     INPUT: json con campo _id con l'id del panino da eliminare
     RESPONSE: status ok in caso di corretta eliminazione, error altrimenti
 */
-router.post('/cambioStato', async (req, res)=>{
+router.post('/cambioStato', Authenticator.authenticateTokenCameriera, async (req, res)=>{
     var error;
     var id = req.body.id;
     var stato = req.body.stato;
@@ -178,13 +179,23 @@ router.post('/cambioStato', async (req, res)=>{
     }
 });
 
+/*
+    METHOD: POST
+    INPUT: id e psw
+    RESPONSE: Verifica la presenza della cameriera sul DB e in caso affermativo genera un awt token di autenticazione
+*/
+router.use('/login', Authenticator.authCamerieraLogin);
+router.post('/login', async (req, res)=>{
+    res.redirect('/cameriera/ordini');
+});
+
 /*-------------------------------PAGINE STATICHE------------------------------*/
 /*
     METHOD: GET
     INPUT: None
     RESPONSE: Pagina html renderizzata da ejs, contenente la lista degli ordini
 */
-router.get('/ordini', async (req, res)=>{
+router.get('/ordini', Authenticator.authenticateTokenCameriera, async (req, res)=>{
     var error;
     var ordini_json;
     try{
@@ -209,7 +220,7 @@ router.get('/ordini', async (req, res)=>{
     INPUT: None
     RESPONSE: Pagina html renderizzata da ejs, contenente la lista degli ordini
 */
-router.get('/ordine/:id', async (req, res)=>{
+router.get('/ordine/:id', Authenticator.authenticateTokenCameriera, async (req, res)=>{
     var error;
     var ordine_json;
     try{
@@ -227,6 +238,15 @@ router.get('/ordine/:id', async (req, res)=>{
         //  console.log(menu_json);
         res.render('ordineCameriera', {ordine: ordine_json});
     }
+});
+
+/*
+    METHOD: GET
+    INPUT: None
+    RESPONSE: Pagina html renderizzata da ejs, contenente la lista degli ordini
+*/
+router.get('/loginPage', async (req, res)=>{
+    res.render('login');
 });
 
 // export router

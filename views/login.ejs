@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <%- include('partials/head'); %> 
+        <title>Login Cameriere</title>
+    </head>
+    <body class="bg-dark" style="font-family:'Work Sans', sans-serif;">
+        <!--NavBar-->
+        <nav class="row navbar navbar-expand-md navbar-dark sticky-top bg-dark border-0 my-3" >
+            <!--Burger Menu-->
+            <div class="col mx-auto my-auto">
+                <!-- <img src="..\..\assets\BurgerMenuFrame1.png" class="img-fluid mx-auto my-auto"> -->
+            </div>
+            <!--Logo-->
+            <div class="col-7 my-auto mx-auto">
+                <img src="..\..\assets\AppLogo.png" class="img-fluid">
+            </div>
+            <!--Carrello-->
+            <div class="col">
+            </div>
+        </nav>
+        <div class="container text-white justify-content-center mt-5">
+            <div class="mb-3">
+                <label for="username" class="form-label">User name</label>
+                <input type="user" class="form-control" id="user" placeholder="UserName">
+            </div>
+            <div class="mb-3">
+                <label for="psw" class="form-label">Password</label>
+                <input type="password" class="form-control" id="psw" placeholder="********">
+            </div>
+            <button class="btn btn-primary" onclick="login()">Conferma</button>
+        </div>
+    </body>
+    <script>
+        async function login(){
+            var id = document.getElementById('user');
+            id = id.value;
+            var psw = document.getElementById('psw');
+            psw = psw.value;
+            var error;
+            var data ={
+                username:id,
+                psw:psw
+            };
+            data = JSON.stringify(data);
+            try{
+                await fetch('/cameriera/login',{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body:data
+                })
+            } catch(err){
+                error = err;
+                alert('ID o psw errati');   
+            }
+            if(!error){
+                window.location.href = '/cameriera/ordini';
+            }
+        }
+    </script>    
+</html>

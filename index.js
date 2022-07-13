@@ -9,6 +9,7 @@
 // Imports
 const express = require('express');// modulo per web server 
 const mongoose = require('mongoose');// modulo per comunicare con mongo DB
+const cookieParser = require('cookie-parser'); //Per impostare i cookie
 require('dotenv').config();
 
 // Utility functions
@@ -27,6 +28,8 @@ app.set('view engine', 'ejs');
 // Imposto le directory degli assets come statiche
 app.use('/assets', express.static('assets'));
 
+//Utilizzo cookie parser per impostare i cookie
+app.use(cookieParser());
 
 // Connect al DB mongoDB attraverso l'URI presente nel file .env
 mongoose.connect(dbURI, {useNewUrlParser:true, useUnifiedTopology: true})
