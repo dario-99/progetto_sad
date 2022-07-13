@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Here will be loaded the code of the Software Architecture Design's project",
   "main": "index.js",
+  "engines": {
+    "node": "v12.19.0"
+  },
   "scripts": {
     "run": "node index.js",
     "start": "node index.js",
