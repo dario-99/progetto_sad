@@ -203,4 +203,60 @@ describe('Ordine Controller', ()=>{
             assert.equal(error.message, "CastError: Cast to ObjectId failed for value \"123asdad\" (type string) at path \"_id\" for model \"Ordine\"");
         });
     });
+    describe('test cambio stato', ()=>{
+        it('cambio stato in new', async ()=>{
+            var ordine;
+            try{
+                var lista_ordini = await OrdineController.getOrdini();
+                ordine = await OrdineController.getOrdineByID(lista_ordini[0]._id);
+            } catch(err){
+                assert.ok(false, "trovato errore quando dovrebbe semplicemente prendere l'ordine");
+            }
+            var error;
+            try{
+                await OrdineController.cambiaStato(lista_ordini[0]._id, 'new');
+            } catch(err){
+                assert.ok(false, 'Trovato errore quando non doveva in cambio stato');
+            }
+        });
+        it('cambio stato in in_preparazione', async ()=>{
+            var ordine;
+            try{
+                var lista_ordini = await OrdineController.getOrdini();
+                ordine = await OrdineController.getOrdineByID(lista_ordini[0]._id);
+            } catch(err){
+                assert.ok(false, "trovato errore quando dovrebbe semplicemente prendere l'ordine");
+            }
+            var error;
+            try{
+                await OrdineController.cambiaStato(lista_ordini[0]._id, 'in_preparazione');
+            } catch(err){
+                assert.ok(false, 'Trovato errore quando non doveva in cambio stato');
+            }
+        });
+        it('cambio stato in completato', async ()=>{
+            var ordine;
+            try{
+                var lista_ordini = await OrdineController.getOrdini();
+                ordine = await OrdineController.getOrdineByID(lista_ordini[0]._id);
+            } catch(err){
+                assert.ok(false, "trovato errore quando dovrebbe semplicemente prendere l'ordine");
+            }
+            var error;
+            try{
+                await OrdineController.cambiaStato(lista_ordini[0]._id, 'completato');
+            } catch(err){
+                assert.ok(false, 'Trovato errore quando non doveva in cambio stato');
+            }
+        });
+        it('cambio stato ordine non presente', async ()=>{
+            var error;
+            try{
+                await OrdineController.cambiaStato('123asdad', 'new');
+            } catch(err){
+                error = err;
+            }
+            assert.equal(error.message, "CastError: Cast to ObjectId failed for value \"123asdad\" (type string) at path \"_id\" for model \"Ordine\"");
+        });
+    });
 });
