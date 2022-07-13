@@ -153,8 +153,8 @@ router.delete('/removePietanza', Authenticator.authenticateTokenCameriera, async
 });
 
 /*
-    METHOD: DELETE
-    INPUT: json con campo _id con l'id del panino da eliminare
+    METHOD: POST
+    INPUT: id dell'ordine e nuovo stato
     RESPONSE: status ok in caso di corretta eliminazione, error altrimenti
 */
 router.post('/cambioStato', Authenticator.authenticateTokenCameriera, async (req, res)=>{
